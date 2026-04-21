@@ -350,6 +350,9 @@ class MotionDecoder(nn.Module):
         keep_mask_embed = rearrange(keep_mask, "b -> b 1 1")
         keep_mask_hidden = rearrange(keep_mask, "b -> b 1")
 
+        # In model.py, before line 353:
+        cond_embed = cond_embed.float()
+        cond_tokens = self.cond_projection(cond_embed)
         cond_tokens = self.cond_projection(cond_embed)
         # encode tokens
         cond_tokens = self.abs_pos_encoding(cond_tokens)

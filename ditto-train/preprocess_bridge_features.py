@@ -294,7 +294,7 @@ Examples:
         end = min(start + shard_size, total)
         wav_list = wav_list[start:end]
         npy_list = npy_list[start:end]
-        device = f"cuda:{args.gpu_id}"
+        device = args.device
         logger.info(
             f"GPU {args.gpu_id}/{args.num_gpus}: "
             f"processing files [{start}:{end}] ({len(wav_list)} files) on {device}"
