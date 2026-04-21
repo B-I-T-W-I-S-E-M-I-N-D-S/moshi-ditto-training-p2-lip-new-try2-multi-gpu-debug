@@ -487,8 +487,19 @@ def main():
             print(f"  ⚠ Error processing video {idx}: {video_list[idx]}")
 
     # ── Save updated data_info ────────────────────────────────────────
-    with open(args.data_info_json, 'w') as f:
-        json.dump(data_info, f, indent=2)
+    if args.gpu_id == 0:
+        for i in range(N):
+            out_d = os.path.dirname(video_list[i])
+            data_info['lipsync_f_s_list'][i] = os.path.join(out_d, "lipsync_f_s.npy")
+            data_info['lipsync_x_s_list'][i] = os.path.join(out_d, "lipsync_x_s.npy")
+            data_info['lipsync_kp_canonical_list'][i] = os.path.join(out_d, "lipsync_kp_canonical.npy")
+            data_info['lipsync_A_list'][i] = os.path.join(out_d, "lipsync_syncnet_A.npy")
+            data_info['lipsync_sim_gt_list'][i] = os.path.join(out_d, "lipsync_sim_gt.npy")
+            
+        tmp_path = args.data_info_json + ".tmp"
+        with open(tmp_path, 'w') as f:
+            json.dump(data_info, f, indent=2)
+        os.replace(tmp_path, args.data_info_json)
 
     print(f"\n{'='*60}")
     print(f"  Done! GPU {args.gpu_id}: {success} succeeded, {errors} errors")

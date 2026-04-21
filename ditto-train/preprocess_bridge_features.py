@@ -60,8 +60,10 @@ def load_json(path: str):
 
 
 def save_json(obj, path: str):
-    with open(path, "w") as f:
+    tmp_path = path + ".tmp"
+    with open(tmp_path, "w") as f:
         json.dump(obj, f, indent=2)
+    os.replace(tmp_path, path)
 
 
 def get_output_npy_path(wav_path: str, output_dir: Optional[str] = None) -> str:
